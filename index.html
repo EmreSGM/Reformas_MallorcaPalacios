@@ -69,6 +69,71 @@
             max-width: calc(100vw - 48px); text-align: center;
         }
         #site-toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+        /* ============ Premium interaction layer ============ */
+
+        /* Ambient glow blobs (hero) */
+        .ambient-blob { position: absolute; border-radius: 9999px; filter: blur(70px); pointer-events: none; animation: blobDrift 12s ease-in-out infinite; }
+        @keyframes blobDrift {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(20px, -24px) scale(1.08); }
+        }
+
+        /* Scroll-down indicator */
+        @keyframes scrollBounce { 0%, 100% { transform: translateY(0); opacity: .6; } 50% { transform: translateY(10px); opacity: 1; } }
+        .scroll-indicator { animation: scrollBounce 2s ease-in-out infinite; }
+
+        /* Buttons: shine sweep + ripple */
+        .btn-fx { position: relative; overflow: hidden; isolation: isolate; }
+        .btn-fx::after {
+            content: ''; position: absolute; top: 0; left: -75%; width: 45%; height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(255,255,255,.4), transparent);
+            transform: skewX(-20deg); transition: left .65s ease; pointer-events: none; z-index: 1;
+        }
+        .btn-fx:hover::after { left: 125%; }
+        .ripple-el {
+            position: absolute; border-radius: 50%; background: rgba(255,255,255,.5);
+            transform: scale(0); animation: rippleAnim .6s ease-out forwards; pointer-events: none; z-index: 0;
+        }
+        @keyframes rippleAnim { to { transform: scale(2.6); opacity: 0; } }
+
+        /* 3D tilt project cards */
+        .tilt-card { position: relative; transition: transform .15s ease-out, box-shadow .35s ease; }
+        .tilt-card::after {
+            content: ''; position: absolute; inset: 0; pointer-events: none; opacity: 0; border-radius: inherit;
+            background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(255,255,255,.5), transparent 55%);
+            transition: opacity .3s ease; mix-blend-mode: overlay; z-index: 2;
+        }
+        .tilt-card:hover::after { opacity: 1; }
+        .tilt-card.tilt-lift { box-shadow: 0 28px 48px rgba(0, 94, 151, 0.22); }
+
+        /* Nav scroll-spy active link */
+        .nav-link { position: relative; }
+        .nav-link::after {
+            content: ''; position: absolute; left: 0; bottom: -6px; width: 0; height: 2px;
+            background: #005e97; transition: width .3s ease;
+        }
+        .nav-link.nav-link-active { color: #005e97; }
+        .nav-link.nav-link-active::after { width: 100%; }
+
+        /* Animated stat bars (Opiniones) */
+        .stat-bar { width: 0%; transition: width 1.1s cubic-bezier(0.22, 1, 0.36, 1); }
+
+        /* Service card icon micro-interaction */
+        .icon-badge { transition: transform .35s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        .service-card:hover .icon-badge { transform: rotate(-8deg) scale(1.12); }
+
+        /* Diagonal section break so sections don't stack as flat rectangles */
+        .diagonal-section { clip-path: polygon(0 40px, 100% 0, 100% calc(100% - 40px), 0 100%); }
+        @media (max-width: 640px) {
+            .diagonal-section { clip-path: polygon(0 20px, 100% 0, 100% calc(100% - 20px), 0 100%); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .ambient-blob, .scroll-indicator { animation: none !important; }
+            .btn-fx::after { display: none; }
+            .tilt-card { transition: none !important; }
+        }
     </style>
 </head>
 <body class="font-body-md text-on-surface bg-background antialiased selection:bg-primary-container selection:text-on-primary-container">
@@ -88,18 +153,18 @@
 </span>
 </a>
 <div class="hidden md:flex space-x-8 font-label-md text-label-md">
-<a class="text-on-surface-variant hover:text-primary-container transition-all duration-300" href="#servicios">Servicios</a>
-<a class="text-on-surface-variant hover:text-primary-container transition-all duration-300" href="#proyectos">Proyectos</a>
-<a class="text-on-surface-variant hover:text-primary-container transition-all duration-300" href="#opiniones">Opiniones</a>
-<a class="text-on-surface-variant hover:text-primary-container transition-all duration-300" href="#presupuesto">Presupuesto</a>
-<a class="text-on-surface-variant hover:text-primary-container transition-all duration-300" href="#contacto">Contacto</a>
+<a class="nav-link text-on-surface-variant hover:text-primary-container transition-all duration-300" href="#servicios">Servicios</a>
+<a class="nav-link text-on-surface-variant hover:text-primary-container transition-all duration-300" href="#proyectos">Proyectos</a>
+<a class="nav-link text-on-surface-variant hover:text-primary-container transition-all duration-300" href="#opiniones">Opiniones</a>
+<a class="nav-link text-on-surface-variant hover:text-primary-container transition-all duration-300" href="#presupuesto">Presupuesto</a>
+<a class="nav-link text-on-surface-variant hover:text-primary-container transition-all duration-300" href="#contacto">Contacto</a>
 </div>
 <div class="hidden md:flex items-center space-x-4">
 <a class="tel-link flex items-center whitespace-nowrap text-on-surface-variant hover:text-primary-container font-label-md text-label-md transition-colors" href="tel:+34871151215">
 <span class="material-symbols-outlined mr-2">call</span>
                     +34 871 15 12 15
                 </a>
-<a class="shrink-0 whitespace-nowrap bg-primary text-on-primary px-6 py-2 rounded-lg font-label-md text-label-md hover:bg-primary-container transition-colors shadow-sm" href="#presupuesto">
+<a class="btn-fx shrink-0 whitespace-nowrap bg-primary text-on-primary px-6 py-2 rounded-lg font-label-md text-label-md hover:bg-primary-container transition-colors shadow-sm" href="#presupuesto">
                     Pedir presupuesto gratis
                 </a>
 </div>
@@ -121,15 +186,17 @@
 <a class="block text-on-surface-variant hover:text-primary font-label-md text-label-md" href="#presupuesto">Presupuesto</a>
 <a class="block text-on-surface-variant hover:text-primary font-label-md text-label-md" href="#contacto">Contacto</a>
 <a class="tel-link flex items-center text-on-surface-variant hover:text-primary font-label-md text-label-md" href="tel:+34871151215"><span class="material-symbols-outlined mr-2">call</span>+34 871 15 12 15</a>
-<a class="block text-center bg-primary text-on-primary px-6 py-3 rounded-lg font-label-md text-label-md" href="#presupuesto">Pedir presupuesto gratis</a>
+<a class="btn-fx block text-center bg-primary text-on-primary px-6 py-3 rounded-lg font-label-md text-label-md" href="#presupuesto">Pedir presupuesto gratis</a>
 </div>
 </nav>
 <!-- 2. HERO -->
-<section class="relative pt-20 h-screen min-h-[600px] flex items-center">
+<section class="relative pt-20 h-screen min-h-[600px] flex items-center overflow-hidden">
 <div class="absolute inset-0 z-0">
-<img class="w-full h-full object-cover" data-alt="A breathtaking, wide-angle shot of a newly renovated luxury living room in a Mediterranean villa in Mallorca. The space features brilliant white walls, exposed light wood ceiling beams, and expansive floor-to-ceiling windows flooding the room with warm, natural sunlight. Elegant, modern minimalist furniture sits on polished stone floors. The color palette emphasizes crisp whites, natural warm woods, and subtle touches of Mediterranean blue, conveying high-end professional construction and interior design excellence." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGaSHIjzE_ez6uZTe7ZXX4oa1LMeJR_C-9NGKeZn0V2uek08Cv0d6I7L1w7gdDMGfEQg_bonXDzKSkE7qA_r0-QavmiBppTBrO7FhVSyqB-uaD_rIXrGTSppc_iuqgVZPu7yzbhKglvsr93Blnlnq5co2ijPBmwVnWXdBmJ94Bdw2ANiebvej3iya8hAY1gMse1BT1kR0Jpsw36ldTnVDHht-XJC7Slmk2j2zYooQkIJTUcVuVf6DzAA"/>
+<img class="w-full h-[130%] -top-[15%] relative object-cover will-change-transform" data-alt="A breathtaking, wide-angle shot of a newly renovated luxury living room in a Mediterranean villa in Mallorca. The space features brilliant white walls, exposed light wood ceiling beams, and expansive floor-to-ceiling windows flooding the room with warm, natural sunlight. Elegant, modern minimalist furniture sits on polished stone floors. The color palette emphasizes crisp whites, natural warm woods, and subtle touches of Mediterranean blue, conveying high-end professional construction and interior design excellence." id="hero-bg-img" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGaSHIjzE_ez6uZTe7ZXX4oa1LMeJR_C-9NGKeZn0V2uek08Cv0d6I7L1w7gdDMGfEQg_bonXDzKSkE7qA_r0-QavmiBppTBrO7FhVSyqB-uaD_rIXrGTSppc_iuqgVZPu7yzbhKglvsr93Blnlnq5co2ijPBmwVnWXdBmJ94Bdw2ANiebvej3iya8hAY1gMse1BT1kR0Jpsw36ldTnVDHht-XJC7Slmk2j2zYooQkIJTUcVuVf6DzAA"/>
 <div class="absolute inset-0 bg-gradient-to-r from-on-surface/80 to-on-surface/40"></div>
 </div>
+<div class="ambient-blob w-72 h-72 bg-primary/40 -top-10 left-1/4 z-[1]"></div>
+<div class="ambient-blob w-96 h-96 bg-secondary-fixed/30 bottom-0 right-0 z-[1]" style="animation-delay: -4s;"></div>
 <div class="relative z-10 w-full px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto text-on-primary">
 <div class="max-w-3xl">
 <h1 class="hero-anim hero-anim-1 font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg mb-6 leading-tight">
@@ -139,11 +206,11 @@
                     Especialistas en reformas integrales y parciales. Diseño moderno, materiales premium y acabados impecables, cumpliendo plazos y presupuestos.
                 </p>
 <div class="hero-anim hero-anim-3 flex flex-col sm:flex-row gap-4 mb-12">
-<a class="bg-[#1a7f37] hover:bg-[#146c2e] text-on-primary px-8 py-4 rounded-lg font-label-md text-label-md transition-colors shadow-lg flex items-center justify-center" href="#presupuesto">
+<a class="btn-fx bg-[#1a7f37] hover:bg-[#146c2e] text-on-primary px-8 py-4 rounded-lg font-label-md text-label-md transition-colors shadow-lg flex items-center justify-center" href="#presupuesto">
                         Pedir presupuesto gratis
                         <span class="material-symbols-outlined ml-2">arrow_forward</span>
 </a>
-<a class="tel-link bg-transparent border-2 border-on-primary text-on-primary hover:bg-on-primary/10 px-8 py-4 rounded-lg font-label-md text-label-md transition-colors flex items-center justify-center" href="tel:+34871151215">
+<a class="btn-fx tel-link bg-transparent border-2 border-on-primary text-on-primary hover:bg-on-primary/10 px-8 py-4 rounded-lg font-label-md text-label-md transition-colors flex items-center justify-center" href="tel:+34871151215">
 <span class="material-symbols-outlined mr-2">call</span>
                         Llamar ahora
                     </a>
@@ -164,6 +231,9 @@
 </div>
 </div>
 </div>
+<a aria-label="Bajar a Servicios" class="scroll-indicator absolute bottom-8 left-1/2 -translate-x-1/2 z-10 text-on-primary/80 hover:text-on-primary" href="#servicios">
+<span class="material-symbols-outlined text-3xl">keyboard_arrow_down</span>
+</a>
 </section>
 <!-- 3. Servicios -->
 <section class="scroll-mt-24 py-section-gap px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto" id="servicios">
@@ -173,32 +243,32 @@
 <p class="font-body-lg text-body-lg text-on-surface-variant">Desde una reforma integral hasta el detalle más pequeño, cuidamos cada fase del proyecto con materiales premium y acabados impecables.</p>
 </div>
 <div class="stagger grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
-<div class="reveal bg-surface-container-lowest rounded-lg elevation-low hover-lift p-8">
-<div class="w-14 h-14 rounded-lg bg-primary/10 flex items-center justify-center mb-6">
+<div class="reveal service-card bg-surface-container-lowest rounded-lg elevation-low hover-lift p-8">
+<div class="icon-badge w-14 h-14 rounded-lg bg-primary/10 flex items-center justify-center mb-6">
 <span class="material-symbols-outlined text-primary text-3xl">construction</span>
 </div>
 <h3 class="font-headline-sm text-headline-sm font-bold text-on-surface mb-2">Reformas Integrales</h3>
 <p class="font-body-md text-body-md text-on-surface-variant mb-4">Transformamos tu vivienda de principio a fin: estructura, instalaciones, diseño y acabados en un único proyecto.</p>
 <a class="inline-flex items-center font-label-md text-label-md text-primary hover:text-primary-container" href="#presupuesto">Pedir presupuesto <span class="material-symbols-outlined ml-1 text-base">arrow_forward</span></a>
 </div>
-<div class="reveal bg-surface-container-lowest rounded-lg elevation-low hover-lift p-8">
-<div class="w-14 h-14 rounded-lg bg-primary/10 flex items-center justify-center mb-6">
+<div class="reveal service-card bg-surface-container-lowest rounded-lg elevation-low hover-lift p-8">
+<div class="icon-badge w-14 h-14 rounded-lg bg-primary/10 flex items-center justify-center mb-6">
 <span class="material-symbols-outlined text-primary text-3xl">kitchen</span>
 </div>
 <h3 class="font-headline-sm text-headline-sm font-bold text-on-surface mb-2">Cocinas</h3>
 <p class="font-body-md text-body-md text-on-surface-variant mb-4">Diseño y ejecución de cocinas funcionales y a medida, con electrodomésticos y encimeras de primeras marcas.</p>
 <a class="inline-flex items-center font-label-md text-label-md text-primary hover:text-primary-container" href="#presupuesto">Pedir presupuesto <span class="material-symbols-outlined ml-1 text-base">arrow_forward</span></a>
 </div>
-<div class="reveal bg-surface-container-lowest rounded-lg elevation-low hover-lift p-8">
-<div class="w-14 h-14 rounded-lg bg-primary/10 flex items-center justify-center mb-6">
+<div class="reveal service-card bg-surface-container-lowest rounded-lg elevation-low hover-lift p-8">
+<div class="icon-badge w-14 h-14 rounded-lg bg-primary/10 flex items-center justify-center mb-6">
 <span class="material-symbols-outlined text-primary text-3xl">bathtub</span>
 </div>
 <h3 class="font-headline-sm text-headline-sm font-bold text-on-surface mb-2">Baños</h3>
 <p class="font-body-md text-body-md text-on-surface-variant mb-4">Baños modernos y atemporales: fontanería, alicatado, mamparas e iluminación pensados para durar.</p>
 <a class="inline-flex items-center font-label-md text-label-md text-primary hover:text-primary-container" href="#presupuesto">Pedir presupuesto <span class="material-symbols-outlined ml-1 text-base">arrow_forward</span></a>
 </div>
-<div class="reveal bg-surface-container-lowest rounded-lg elevation-low hover-lift p-8">
-<div class="w-14 h-14 rounded-lg bg-primary/10 flex items-center justify-center mb-6">
+<div class="reveal service-card bg-surface-container-lowest rounded-lg elevation-low hover-lift p-8">
+<div class="icon-badge w-14 h-14 rounded-lg bg-primary/10 flex items-center justify-center mb-6">
 <span class="material-symbols-outlined text-primary text-3xl">design_services</span>
 </div>
 <h3 class="font-headline-sm text-headline-sm font-bold text-on-surface mb-2">Interiorismo</h3>
@@ -208,7 +278,7 @@
 </div>
 </section>
 <!-- 4. Proyectos -->
-<section class="scroll-mt-24 py-section-gap bg-surface-container-low" id="proyectos">
+<section class="diagonal-section scroll-mt-24 py-section-gap bg-surface-container-low" id="proyectos">
 <div class="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
 <div class="reveal max-w-2xl mx-auto text-center mb-16">
 <p class="font-label-md text-label-md text-secondary uppercase tracking-widest mb-3">Proyectos realizados</p>
@@ -216,7 +286,7 @@
 <p class="font-body-lg text-body-lg text-on-surface-variant">Una muestra de reformas recientes en toda la isla de Mallorca.</p>
 </div>
 <div class="stagger grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-gutter">
-<div class="reveal group bg-surface-container-lowest rounded-lg overflow-hidden elevation-low hover-lift">
+<div class="reveal group tilt-card bg-surface-container-lowest rounded-lg overflow-hidden elevation-low">
 <div class="relative h-64 overflow-hidden">
 <img alt="Fachada de villa reformada en Bendinat, Mallorca" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&amp;q=75"/>
 <span class="absolute top-4 left-4 bg-secondary text-on-secondary font-label-md text-label-md px-3 py-1 rounded">Reforma Integral</span>
@@ -226,7 +296,7 @@
 <p class="font-body-md text-body-md text-on-surface-variant">Reforma integral de 220 m² con piscina y vistas al mar.</p>
 </div>
 </div>
-<div class="reveal group bg-surface-container-lowest rounded-lg overflow-hidden elevation-low hover-lift">
+<div class="reveal group tilt-card bg-surface-container-lowest rounded-lg overflow-hidden elevation-low">
 <div class="relative h-64 overflow-hidden">
 <img alt="Cocina de diseño reformada en Puerto Portals, Mallorca" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://images.unsplash.com/photo-1556912167-f556f1f39fdf?w=800&amp;q=75"/>
 <span class="absolute top-4 left-4 bg-secondary text-on-secondary font-label-md text-label-md px-3 py-1 rounded">Cocina</span>
@@ -236,7 +306,7 @@
 <p class="font-body-md text-body-md text-on-surface-variant">Isla central en mármol, carpintería a medida y electrodomésticos integrados.</p>
 </div>
 </div>
-<div class="reveal group bg-surface-container-lowest rounded-lg overflow-hidden elevation-low hover-lift">
+<div class="reveal group tilt-card bg-surface-container-lowest rounded-lg overflow-hidden elevation-low">
 <div class="relative h-64 overflow-hidden">
 <img alt="Baño moderno reformado en Son Vida, Mallorca" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=800&amp;q=75"/>
 <span class="absolute top-4 left-4 bg-secondary text-on-secondary font-label-md text-label-md px-3 py-1 rounded">Baño</span>
@@ -246,7 +316,7 @@
 <p class="font-body-md text-body-md text-on-surface-variant">Mampara de vidrio a medida, mueble suspendido y suelo porcelánico símil madera.</p>
 </div>
 </div>
-<div class="reveal group bg-surface-container-lowest rounded-lg overflow-hidden elevation-low hover-lift">
+<div class="reveal group tilt-card bg-surface-container-lowest rounded-lg overflow-hidden elevation-low">
 <div class="relative h-64 overflow-hidden">
 <img alt="Piscina y zona chill-out reformada en Andratx, Mallorca" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&amp;q=75"/>
 <span class="absolute top-4 left-4 bg-secondary text-on-secondary font-label-md text-label-md px-3 py-1 rounded">Piscina &amp; Exterior</span>
@@ -256,7 +326,7 @@
 <p class="font-body-md text-body-md text-on-surface-variant">Zona chill-out con piscina desbordante, tarima exterior e iluminación ambiental.</p>
 </div>
 </div>
-<div class="reveal group bg-surface-container-lowest rounded-lg overflow-hidden elevation-low hover-lift">
+<div class="reveal group tilt-card bg-surface-container-lowest rounded-lg overflow-hidden elevation-low">
 <div class="relative h-64 overflow-hidden">
 <img alt="Salón diáfano reformado en Palma de Mallorca" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&amp;q=75"/>
 <span class="absolute top-4 left-4 bg-secondary text-on-secondary font-label-md text-label-md px-3 py-1 rounded">Salón</span>
@@ -266,7 +336,7 @@
 <p class="font-body-md text-body-md text-on-surface-variant">Derribo de tabiques para crear un espacio abierto de cocina, comedor y salón.</p>
 </div>
 </div>
-<div class="reveal group bg-surface-container-lowest rounded-lg overflow-hidden elevation-low hover-lift">
+<div class="reveal group tilt-card bg-surface-container-lowest rounded-lg overflow-hidden elevation-low">
 <div class="relative h-64 overflow-hidden">
 <img alt="Ático reformado con vistas al mar en Portixol, Mallorca" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&amp;q=75"/>
 <span class="absolute top-4 left-4 bg-secondary text-on-secondary font-label-md text-label-md px-3 py-1 rounded">Interiorismo</span>
@@ -278,7 +348,7 @@
 </div>
 </div>
 <div class="reveal text-center mt-12">
-<a class="inline-flex items-center border-2 border-primary text-primary hover:bg-primary hover:text-on-primary px-8 py-3 rounded-lg font-label-md text-label-md transition-colors" href="https://wa.me/34871151215?text=Hola%2C%20me%20gustar%C3%ADa%20ver%20m%C3%A1s%20proyectos%20de%20reformas" rel="noopener" target="_blank">
+<a class="btn-fx inline-flex items-center border-2 border-primary text-primary hover:bg-primary hover:text-on-primary px-8 py-3 rounded-lg font-label-md text-label-md transition-colors" href="https://wa.me/34871151215?text=Hola%2C%20me%20gustar%C3%ADa%20ver%20m%C3%A1s%20proyectos%20de%20reformas" rel="noopener" target="_blank">
                     Ver más proyectos por WhatsApp
                     <span class="material-symbols-outlined ml-2 text-base">arrow_forward</span>
 </a>
@@ -299,31 +369,31 @@
 <div class="space-y-2 mb-6">
 <div class="flex items-center gap-3">
 <span class="font-label-md text-label-md text-on-surface-variant w-2">5</span>
-<div class="flex-1 h-2 rounded-full bg-surface-container-high overflow-hidden"><div class="h-full bg-[#f5a623] rounded-full" style="width:96%"></div></div>
+<div class="flex-1 h-2 rounded-full bg-surface-container-high overflow-hidden"><div class="stat-bar h-full bg-[#f5a623] rounded-full" data-width="96%"></div></div>
 </div>
 <div class="flex items-center gap-3">
 <span class="font-label-md text-label-md text-on-surface-variant w-2">4</span>
-<div class="flex-1 h-2 rounded-full bg-surface-container-high overflow-hidden"><div class="h-full bg-[#f5a623] rounded-full" style="width:2%"></div></div>
+<div class="flex-1 h-2 rounded-full bg-surface-container-high overflow-hidden"><div class="stat-bar h-full bg-[#f5a623] rounded-full" data-width="2%"></div></div>
 </div>
 <div class="flex items-center gap-3">
 <span class="font-label-md text-label-md text-on-surface-variant w-2">3</span>
-<div class="flex-1 h-2 rounded-full bg-surface-container-high overflow-hidden"><div class="h-full bg-[#f5a623] rounded-full" style="width:0%"></div></div>
+<div class="flex-1 h-2 rounded-full bg-surface-container-high overflow-hidden"><div class="stat-bar h-full bg-[#f5a623] rounded-full" data-width="0%"></div></div>
 </div>
 <div class="flex items-center gap-3">
 <span class="font-label-md text-label-md text-on-surface-variant w-2">2</span>
-<div class="flex-1 h-2 rounded-full bg-surface-container-high overflow-hidden"><div class="h-full bg-[#f5a623] rounded-full" style="width:2%"></div></div>
+<div class="flex-1 h-2 rounded-full bg-surface-container-high overflow-hidden"><div class="stat-bar h-full bg-[#f5a623] rounded-full" data-width="2%"></div></div>
 </div>
 <div class="flex items-center gap-3">
 <span class="font-label-md text-label-md text-on-surface-variant w-2">1</span>
-<div class="flex-1 h-2 rounded-full bg-surface-container-high overflow-hidden"><div class="h-full bg-[#f5a623] rounded-full" style="width:0%"></div></div>
+<div class="flex-1 h-2 rounded-full bg-surface-container-high overflow-hidden"><div class="stat-bar h-full bg-[#f5a623] rounded-full" data-width="0%"></div></div>
 </div>
 </div>
 <div class="mt-auto">
-<p class="font-display text-5xl font-bold text-on-surface leading-none mb-2">5,0</p>
+<p class="font-display text-5xl font-bold text-on-surface leading-none mb-2"><span class="count-target" data-decimals="1" data-target="5">0,0</span></p>
 <div class="flex gap-0.5 text-[#f5a623] mb-2">
 <span class="material-symbols-outlined icon-fill">star</span><span class="material-symbols-outlined icon-fill">star</span><span class="material-symbols-outlined icon-fill">star</span><span class="material-symbols-outlined icon-fill">star</span><span class="material-symbols-outlined icon-fill">star</span>
 </div>
-<p class="font-body-md text-body-md text-on-surface-variant mb-3">27 reseñas</p>
+<p class="font-body-md text-body-md text-on-surface-variant mb-3"><span class="count-target" data-target="27">0</span> reseñas</p>
 <a class="inline-flex items-center gap-1 font-label-md text-label-md text-on-surface-variant hover:text-primary underline decoration-dotted underline-offset-4" href="https://www.google.com/search?sa=X&amp;sca_esv=b8c34c1ecacfd0ff&amp;sxsrf=APpeQnvXohNjWfsI_Of4jUiyPQ10U7HqdA:1785446911895&amp;q=Reformas+Mallorca+Palacios+Rese%C3%B1as&amp;rflfq=1&amp;num=20&amp;stick=H4sIAAAAAAAAAONgkxI2MjY3tzQzNTY2NDI2sLSwNLU02cDI-IpROSg1Lb8oN7FYwTcxJye_KDlRISAxJzE5M79YISi1OPXwxsTiRazEqAIAM2ScRGYAAAA&amp;rldimm=2377965331230989594&amp;tbm=lcl&amp;hl=es-FR&amp;ved=2ahUKEwj-pMuHrPuVAxWERqQEHdGIDjwQ9fQKegQITRAG&amp;biw=2037&amp;bih=931&amp;dpr=0.94#lkt=LocalPoiReviews" rel="noopener" target="_blank">
                         Ver reseñas en Google
                         <span class="material-symbols-outlined text-sm">open_in_new</span>
@@ -445,7 +515,7 @@
 <label class="block font-label-md text-label-md text-on-surface-variant mb-2" for="q-message">Cuéntanos brevemente tu proyecto</label>
 <textarea class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-4 py-3 font-body-md text-body-md text-on-surface focus:outline-none focus:border-primary transition-colors" id="q-message" name="message" placeholder="Superficie, ubicación, plazos..." rows="4"></textarea>
 </div>
-<button class="w-full bg-[#1a7f37] hover:bg-[#146c2e] text-on-primary px-8 py-4 rounded-lg font-label-md text-label-md transition-colors shadow-lg" type="submit">Solicitar presupuesto gratis</button>
+<button class="btn-fx w-full bg-[#1a7f37] hover:bg-[#146c2e] text-on-primary px-8 py-4 rounded-lg font-label-md text-label-md transition-colors shadow-lg" type="submit">Solicitar presupuesto gratis</button>
 </form>
 <p class="hidden text-center py-6 font-body-md text-body-md text-on-surface" id="quote-success">¡Gracias! Hemos recibido tu solicitud, te llamaremos en menos de 24h.</p>
 </div>
@@ -579,19 +649,117 @@
     }
 
     // Reveal sections/cards as they scroll into view
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function animateCount(el) {
+        const target = parseFloat(el.dataset.target);
+        const decimals = parseInt(el.dataset.decimals || '0', 10);
+        const duration = 1200;
+        const start = performance.now();
+        function tick(now) {
+            const progress = Math.min((now - start) / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            const val = target * eased;
+            el.textContent = decimals ? val.toFixed(decimals).replace('.', ',') : Math.round(val).toString();
+            if (progress < 1) requestAnimationFrame(tick);
+        }
+        if (prefersReducedMotion) {
+            el.textContent = decimals ? target.toFixed(decimals).replace('.', ',') : target.toString();
+        } else {
+            requestAnimationFrame(tick);
+        }
+    }
+
     const revealTargets = document.querySelectorAll('.reveal');
     if ('IntersectionObserver' in window && revealTargets.length) {
         const revealObserver = new IntersectionObserver((entries, observer) => {
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('reveal-visible');
+                    entry.target.querySelectorAll('.stat-bar').forEach((bar) => {
+                        bar.style.width = bar.dataset.width;
+                    });
+                    entry.target.querySelectorAll('.count-target').forEach((el) => animateCount(el));
                     observer.unobserve(entry.target);
                 }
             });
         }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
         revealTargets.forEach((el) => revealObserver.observe(el));
     } else {
-        revealTargets.forEach((el) => el.classList.add('reveal-visible'));
+        revealTargets.forEach((el) => {
+            el.classList.add('reveal-visible');
+            el.querySelectorAll('.stat-bar').forEach((bar) => { bar.style.width = bar.dataset.width; });
+            el.querySelectorAll('.count-target').forEach((el2) => animateCount(el2));
+        });
+    }
+
+    // 3D tilt effect on project photo cards (mouse-tracked rotation + glare)
+    if (!prefersReducedMotion && window.matchMedia('(hover: hover)').matches) {
+        document.querySelectorAll('.tilt-card').forEach((card) => {
+            const maxTilt = 7;
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const px = (e.clientX - rect.left) / rect.width;
+                const py = (e.clientY - rect.top) / rect.height;
+                const rotateY = (px - 0.5) * maxTilt * 2;
+                const rotateX = (0.5 - py) * maxTilt * 2;
+                card.style.transform = 'perspective(1000px) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg) scale3d(1.025,1.025,1.025)';
+                card.style.setProperty('--mx', (px * 100) + '%');
+                card.style.setProperty('--my', (py * 100) + '%');
+                card.classList.add('tilt-lift');
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)';
+                card.classList.remove('tilt-lift');
+            });
+        });
+    }
+
+    // Button shine + ripple feedback
+    document.querySelectorAll('.btn-fx').forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+            const rect = btn.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            const ripple = document.createElement('span');
+            ripple.className = 'ripple-el';
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+            ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
+            btn.appendChild(ripple);
+            ripple.addEventListener('animationend', () => ripple.remove());
+        });
+    });
+
+    // Subtle parallax on the hero background image
+    const heroBgImg = document.getElementById('hero-bg-img');
+    if (heroBgImg && !prefersReducedMotion) {
+        let ticking = false;
+        function updateParallax() {
+            const offset = Math.min(window.scrollY * 0.15, 90);
+            heroBgImg.style.transform = 'translateY(' + offset + 'px)';
+            ticking = false;
+        }
+        window.addEventListener('scroll', () => {
+            if (!ticking) { requestAnimationFrame(updateParallax); ticking = true; }
+        }, { passive: true });
+    }
+
+    // Nav scroll-spy: highlight the link for the section currently in view
+    const navLinks = document.querySelectorAll('.nav-link');
+    const spySections = Array.from(navLinks)
+        .map((link) => document.querySelector(link.getAttribute('href')))
+        .filter(Boolean);
+    if ('IntersectionObserver' in window && spySections.length) {
+        const spyObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    navLinks.forEach((link) => {
+                        link.classList.toggle('nav-link-active', link.getAttribute('href') === '#' + entry.target.id);
+                    });
+                }
+            });
+        }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+        spySections.forEach((section) => spyObserver.observe(section));
     }
 
     // Nav gains a deeper shadow once the page scrolls
