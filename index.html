@@ -190,9 +190,9 @@
 </div>
 </nav>
 <!-- 2. HERO -->
-<section class="relative pt-20 h-screen min-h-[600px] flex items-center overflow-hidden">
+<section class="relative pt-20 h-screen min-h-[600px] flex items-center overflow-hidden" id="hero-section">
 <div class="absolute inset-0 z-0">
-<img class="w-full h-[130%] -top-[15%] relative object-cover will-change-transform" data-alt="A breathtaking, wide-angle shot of a newly renovated luxury living room in a Mediterranean villa in Mallorca. The space features brilliant white walls, exposed light wood ceiling beams, and expansive floor-to-ceiling windows flooding the room with warm, natural sunlight. Elegant, modern minimalist furniture sits on polished stone floors. The color palette emphasizes crisp whites, natural warm woods, and subtle touches of Mediterranean blue, conveying high-end professional construction and interior design excellence." id="hero-bg-img" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGaSHIjzE_ez6uZTe7ZXX4oa1LMeJR_C-9NGKeZn0V2uek08Cv0d6I7L1w7gdDMGfEQg_bonXDzKSkE7qA_r0-QavmiBppTBrO7FhVSyqB-uaD_rIXrGTSppc_iuqgVZPu7yzbhKglvsr93Blnlnq5co2ijPBmwVnWXdBmJ94Bdw2ANiebvej3iya8hAY1gMse1BT1kR0Jpsw36ldTnVDHht-XJC7Slmk2j2zYooQkIJTUcVuVf6DzAA"/>
+<img alt="Villa mediterránea moderna con piscina infinita, terraza y jardín en Mallorca" class="w-full h-[130%] -top-[15%] relative object-cover will-change-transform" id="hero-bg-img" src="https://images.unsplash.com/photo-1613977257363-707ba9348227?w=1920&amp;q=80&amp;auto=format&amp;fit=crop"/>
 <div class="absolute inset-0 bg-gradient-to-r from-on-surface/80 to-on-surface/40"></div>
 </div>
 <div class="ambient-blob w-72 h-72 bg-primary/40 -top-10 left-1/4 z-[1]"></div>
@@ -236,13 +236,15 @@
 </a>
 </section>
 <!-- 3. Servicios -->
-<section class="scroll-mt-24 py-section-gap px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto" id="servicios">
-<div class="reveal max-w-2xl mx-auto text-center mb-16">
+<section class="relative overflow-hidden scroll-mt-24 py-section-gap px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto" id="servicios">
+<div class="ambient-blob w-[28rem] h-[28rem] bg-primary/10 -top-40 -left-32 z-0" style="animation-delay:-2s;"></div>
+<div class="ambient-blob w-[24rem] h-[24rem] bg-secondary-fixed/20 -bottom-32 -right-24 z-0" style="animation-delay:-7s;"></div>
+<div class="reveal relative z-10 max-w-2xl mx-auto text-center mb-16">
 <p class="font-label-md text-label-md text-secondary uppercase tracking-widest mb-3">Nuestros servicios</p>
 <h2 class="font-headline-md text-headline-md font-bold text-on-surface mb-4">Reformas a la medida de tu hogar</h2>
 <p class="font-body-lg text-body-lg text-on-surface-variant">Desde una reforma integral hasta el detalle más pequeño, cuidamos cada fase del proyecto con materiales premium y acabados impecables.</p>
 </div>
-<div class="stagger grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<div class="stagger relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
 <div class="reveal service-card bg-surface-container-lowest rounded-lg elevation-low hover-lift p-8">
 <div class="icon-badge w-14 h-14 rounded-lg bg-primary/10 flex items-center justify-center mb-6">
 <span class="material-symbols-outlined text-primary text-3xl">construction</span>
@@ -696,14 +698,14 @@
     // 3D tilt effect on project photo cards (mouse-tracked rotation + glare)
     if (!prefersReducedMotion && window.matchMedia('(hover: hover)').matches) {
         document.querySelectorAll('.tilt-card').forEach((card) => {
-            const maxTilt = 7;
+            const maxTilt = 15;
             card.addEventListener('mousemove', (e) => {
                 const rect = card.getBoundingClientRect();
                 const px = (e.clientX - rect.left) / rect.width;
                 const py = (e.clientY - rect.top) / rect.height;
                 const rotateY = (px - 0.5) * maxTilt * 2;
                 const rotateX = (0.5 - py) * maxTilt * 2;
-                card.style.transform = 'perspective(1000px) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg) scale3d(1.025,1.025,1.025)';
+                card.style.transform = 'perspective(900px) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg) scale3d(1.06,1.06,1.06)';
                 card.style.setProperty('--mx', (px * 100) + '%');
                 card.style.setProperty('--my', (py * 100) + '%');
                 card.classList.add('tilt-lift');
@@ -730,18 +732,44 @@
         });
     });
 
-    // Subtle parallax on the hero background image
+    // Interactive hero background: scrolls with parallax AND drifts with the cursor
     const heroBgImg = document.getElementById('hero-bg-img');
+    const heroSection = document.getElementById('hero-section');
     if (heroBgImg && !prefersReducedMotion) {
+        let scrollOffset = 0;
+        let mouseX = 0;
+        let mouseY = 0;
         let ticking = false;
-        function updateParallax() {
-            const offset = Math.min(window.scrollY * 0.15, 90);
-            heroBgImg.style.transform = 'translateY(' + offset + 'px)';
+
+        function applyHeroTransform() {
+            heroBgImg.style.transform = 'translate3d(' + mouseX + 'px, ' + (scrollOffset + mouseY) + 'px, 0) scale(1.06)';
             ticking = false;
         }
+        function requestTick() {
+            if (!ticking) { requestAnimationFrame(applyHeroTransform); ticking = true; }
+        }
+
         window.addEventListener('scroll', () => {
-            if (!ticking) { requestAnimationFrame(updateParallax); ticking = true; }
+            scrollOffset = Math.min(window.scrollY * 0.15, 90);
+            requestTick();
         }, { passive: true });
+
+        if (heroSection && window.matchMedia('(hover: hover)').matches) {
+            heroSection.addEventListener('mousemove', (e) => {
+                const rect = heroSection.getBoundingClientRect();
+                const px = (e.clientX - rect.left) / rect.width - 0.5;
+                const py = (e.clientY - rect.top) / rect.height - 0.5;
+                mouseX = px * -24;
+                mouseY = py * -16;
+                requestTick();
+            });
+            heroSection.addEventListener('mouseleave', () => {
+                mouseX = 0;
+                mouseY = 0;
+                requestTick();
+            });
+        }
+        applyHeroTransform();
     }
 
     // Nav scroll-spy: highlight the link for the section currently in view
