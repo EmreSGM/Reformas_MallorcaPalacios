@@ -98,14 +98,15 @@
         @keyframes rippleAnim { to { transform: scale(2.6); opacity: 0; } }
 
         /* 3D tilt project cards */
-        .tilt-card { position: relative; transition: transform .15s ease-out, box-shadow .35s ease; }
+        .tilt-card { position: relative; transition: transform .1s linear, box-shadow .35s ease; }
+        .tilt-card.tilt-resetting { transition: transform .4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow .35s ease; }
         .tilt-card::after {
             content: ''; position: absolute; inset: 0; pointer-events: none; opacity: 0; border-radius: inherit;
             background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(255,255,255,.5), transparent 55%);
             transition: opacity .3s ease; mix-blend-mode: overlay; z-index: 2;
         }
         .tilt-card:hover::after { opacity: 1; }
-        .tilt-card.tilt-lift { box-shadow: 0 28px 48px rgba(0, 94, 151, 0.22); }
+        .tilt-card.tilt-lift { box-shadow: 0 28px 48px rgba(0, 94, 151, 0.22); z-index: 10; }
 
         /* Nav scroll-spy active link */
         .nav-link { position: relative; }
@@ -288,9 +289,9 @@
 <p class="font-body-lg text-body-lg text-on-surface-variant">Una muestra de reformas recientes en toda la isla de Mallorca.</p>
 </div>
 <div class="stagger grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-gutter">
-<div class="reveal group tilt-card bg-surface-container-lowest rounded-lg overflow-hidden elevation-low">
+<div class="reveal tilt-card bg-surface-container-lowest rounded-lg overflow-hidden elevation-low">
 <div class="relative h-64 overflow-hidden">
-<img alt="Fachada de villa reformada en Bendinat, Mallorca" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&amp;q=75"/>
+<img alt="Fachada de villa reformada en Bendinat, Mallorca" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&amp;q=75"/>
 <span class="absolute top-4 left-4 bg-secondary text-on-secondary font-label-md text-label-md px-3 py-1 rounded">Reforma Integral</span>
 </div>
 <div class="p-6">
@@ -298,9 +299,9 @@
 <p class="font-body-md text-body-md text-on-surface-variant">Reforma integral de 220 m² con piscina y vistas al mar.</p>
 </div>
 </div>
-<div class="reveal group tilt-card bg-surface-container-lowest rounded-lg overflow-hidden elevation-low">
+<div class="reveal tilt-card bg-surface-container-lowest rounded-lg overflow-hidden elevation-low">
 <div class="relative h-64 overflow-hidden">
-<img alt="Cocina de diseño reformada en Puerto Portals, Mallorca" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://images.unsplash.com/photo-1556912167-f556f1f39fdf?w=800&amp;q=75"/>
+<img alt="Cocina de diseño reformada en Puerto Portals, Mallorca" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1556912167-f556f1f39fdf?w=800&amp;q=75"/>
 <span class="absolute top-4 left-4 bg-secondary text-on-secondary font-label-md text-label-md px-3 py-1 rounded">Cocina</span>
 </div>
 <div class="p-6">
@@ -308,9 +309,9 @@
 <p class="font-body-md text-body-md text-on-surface-variant">Isla central en mármol, carpintería a medida y electrodomésticos integrados.</p>
 </div>
 </div>
-<div class="reveal group tilt-card bg-surface-container-lowest rounded-lg overflow-hidden elevation-low">
+<div class="reveal tilt-card bg-surface-container-lowest rounded-lg overflow-hidden elevation-low">
 <div class="relative h-64 overflow-hidden">
-<img alt="Baño moderno reformado en Son Vida, Mallorca" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=800&amp;q=75"/>
+<img alt="Baño moderno reformado en Son Vida, Mallorca" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=800&amp;q=75"/>
 <span class="absolute top-4 left-4 bg-secondary text-on-secondary font-label-md text-label-md px-3 py-1 rounded">Baño</span>
 </div>
 <div class="p-6">
@@ -318,9 +319,9 @@
 <p class="font-body-md text-body-md text-on-surface-variant">Mampara de vidrio a medida, mueble suspendido y suelo porcelánico símil madera.</p>
 </div>
 </div>
-<div class="reveal group tilt-card bg-surface-container-lowest rounded-lg overflow-hidden elevation-low">
+<div class="reveal tilt-card bg-surface-container-lowest rounded-lg overflow-hidden elevation-low">
 <div class="relative h-64 overflow-hidden">
-<img alt="Piscina y zona chill-out reformada en Andratx, Mallorca" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&amp;q=75"/>
+<img alt="Piscina y zona chill-out reformada en Andratx, Mallorca" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&amp;q=75"/>
 <span class="absolute top-4 left-4 bg-secondary text-on-secondary font-label-md text-label-md px-3 py-1 rounded">Piscina &amp; Exterior</span>
 </div>
 <div class="p-6">
@@ -328,9 +329,9 @@
 <p class="font-body-md text-body-md text-on-surface-variant">Zona chill-out con piscina desbordante, tarima exterior e iluminación ambiental.</p>
 </div>
 </div>
-<div class="reveal group tilt-card bg-surface-container-lowest rounded-lg overflow-hidden elevation-low">
+<div class="reveal tilt-card bg-surface-container-lowest rounded-lg overflow-hidden elevation-low">
 <div class="relative h-64 overflow-hidden">
-<img alt="Salón diáfano reformado en Palma de Mallorca" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&amp;q=75"/>
+<img alt="Salón diáfano reformado en Palma de Mallorca" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&amp;q=75"/>
 <span class="absolute top-4 left-4 bg-secondary text-on-secondary font-label-md text-label-md px-3 py-1 rounded">Salón</span>
 </div>
 <div class="p-6">
@@ -338,9 +339,9 @@
 <p class="font-body-md text-body-md text-on-surface-variant">Derribo de tabiques para crear un espacio abierto de cocina, comedor y salón.</p>
 </div>
 </div>
-<div class="reveal group tilt-card bg-surface-container-lowest rounded-lg overflow-hidden elevation-low">
+<div class="reveal tilt-card bg-surface-container-lowest rounded-lg overflow-hidden elevation-low">
 <div class="relative h-64 overflow-hidden">
-<img alt="Ático reformado con vistas al mar en Portixol, Mallorca" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&amp;q=75"/>
+<img alt="Ático reformado con vistas al mar en Portixol, Mallorca" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&amp;q=75"/>
 <span class="absolute top-4 left-4 bg-secondary text-on-secondary font-label-md text-label-md px-3 py-1 rounded">Interiorismo</span>
 </div>
 <div class="p-6">
@@ -358,13 +359,15 @@
 </div>
 </section>
 <!-- 5. Opiniones -->
-<section class="scroll-mt-24 py-section-gap px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto" id="opiniones">
-<div class="reveal max-w-2xl mx-auto text-center mb-16">
+<section class="relative overflow-hidden scroll-mt-24 py-section-gap px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto" id="opiniones">
+<div class="ambient-blob w-[26rem] h-[26rem] bg-secondary-fixed/15 top-1/3 -left-40 z-0" style="animation-delay:-3s;"></div>
+<div class="ambient-blob w-[22rem] h-[22rem] bg-primary/10 -bottom-24 -right-24 z-0" style="animation-delay:-9s;"></div>
+<div class="reveal relative z-10 max-w-2xl mx-auto text-center mb-16">
 <p class="font-label-md text-label-md text-secondary uppercase tracking-widest mb-3">Opiniones</p>
 <h2 class="font-headline-md text-headline-md font-bold text-on-surface mb-4">Lo que dicen nuestros clientes</h2>
 <p class="font-body-lg text-body-lg text-on-surface-variant">Reseñas reales de clientes que ya han reformado su hogar o negocio con nosotros.</p>
 </div>
-<div class="stagger grid grid-cols-1 lg:grid-cols-3 gap-gutter mb-gutter">
+<div class="stagger relative z-10 grid grid-cols-1 lg:grid-cols-3 gap-gutter mb-gutter">
 <div class="reveal hover-lift bg-surface-container-lowest rounded-lg elevation-low p-8 flex flex-col">
 <h3 class="font-headline-sm text-headline-sm font-bold text-on-surface mb-1">Resumen de reseñas</h3>
 <p class="font-label-md text-label-md text-on-surface-variant mb-6 flex items-center">Las reseñas no se verifican <span class="material-symbols-outlined text-base ml-1">info</span></p>
@@ -435,7 +438,7 @@
 </div>
 </div>
 </div>
-<div class="stagger grid grid-cols-1 lg:grid-cols-2 gap-gutter">
+<div class="stagger relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-gutter">
 <div class="reveal hover-lift bg-surface-container-lowest rounded-lg elevation-low p-8">
 <div class="flex items-center mb-4">
 <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold font-label-md text-lg mr-4">F</div>
@@ -475,8 +478,10 @@
 </div>
 </section>
 <!-- 6. Presupuesto -->
-<section class="scroll-mt-24 py-section-gap px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto" id="presupuesto">
-<div class="stagger grid grid-cols-1 lg:grid-cols-2 gap-gutter items-center">
+<section class="relative overflow-hidden scroll-mt-24 py-section-gap px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto" id="presupuesto">
+<div class="ambient-blob w-[24rem] h-[24rem] bg-primary/10 -top-28 -right-32 z-0" style="animation-delay:-5s;"></div>
+<div class="ambient-blob w-[20rem] h-[20rem] bg-secondary-fixed/15 -bottom-20 -left-24 z-0" style="animation-delay:-11s;"></div>
+<div class="stagger relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-gutter items-center">
 <div class="reveal">
 <p class="font-label-md text-label-md text-secondary uppercase tracking-widest mb-3">Presupuesto</p>
 <h2 class="font-headline-md text-headline-md font-bold text-on-surface mb-4">Cuéntanos tu proyecto, te llamamos en menos de 24h</h2>
@@ -524,13 +529,15 @@
 </div>
 </section>
 <!-- 7. Contacto -->
-<section class="scroll-mt-24 py-section-gap px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto" id="contacto">
-<div class="reveal max-w-2xl mx-auto text-center mb-16">
+<section class="relative overflow-hidden scroll-mt-24 py-section-gap px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto" id="contacto">
+<div class="ambient-blob w-[24rem] h-[24rem] bg-secondary-fixed/15 top-0 -left-32 z-0" style="animation-delay:-1s;"></div>
+<div class="ambient-blob w-[22rem] h-[22rem] bg-primary/10 -bottom-24 -right-20 z-0" style="animation-delay:-8s;"></div>
+<div class="reveal relative z-10 max-w-2xl mx-auto text-center mb-16">
 <p class="font-label-md text-label-md text-secondary uppercase tracking-widest mb-3">Contacto</p>
 <h2 class="font-headline-md text-headline-md font-bold text-on-surface mb-4">Hablemos de tu proyecto</h2>
 <p class="font-body-lg text-body-lg text-on-surface-variant">Estamos en Palma de Mallorca y trabajamos en toda la isla. Escríbenos, llámanos o pásate por nuestra oficina.</p>
 </div>
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-gutter">
+<div class="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-gutter">
 <div class="stagger space-y-4">
 <div class="reveal hover-lift flex items-center bg-surface-container-lowest rounded-lg elevation-low p-6">
 <span class="material-symbols-outlined text-primary text-3xl mr-4">location_on</span>
@@ -700,6 +707,7 @@
         document.querySelectorAll('.tilt-card').forEach((card) => {
             const maxTilt = 15;
             card.addEventListener('mousemove', (e) => {
+                card.classList.remove('tilt-resetting');
                 const rect = card.getBoundingClientRect();
                 const px = (e.clientX - rect.left) / rect.width;
                 const py = (e.clientY - rect.top) / rect.height;
@@ -711,7 +719,8 @@
                 card.classList.add('tilt-lift');
             });
             card.addEventListener('mouseleave', () => {
-                card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)';
+                card.classList.add('tilt-resetting');
+                card.style.transform = 'perspective(900px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)';
                 card.classList.remove('tilt-lift');
             });
         });
